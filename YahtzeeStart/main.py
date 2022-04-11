@@ -9,12 +9,33 @@ import playing
 
 # TODO: write main AFTER you have written and tested each function
 def main():
-    print("Test")
+    scoreCardList = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+    userTurn = False
+    boardcomplete = False
+    scorecard.resetScorecard(scoreCardList)
+    while boardcomplete == False:
+        userTurn = not userTurn
+        scorecard.updateScorecard(scoreCardList)
+        scorecard.displayScorecards(scoreCardList)
+        if userTurn == True:
+            print("User's turn.....")
+            sleep(5)
+            playing.userPlay(scoreCardList[constants.USER])
+        else:
+            print("Computer's turn.....")
+            sleep(5)
+            playing.computerPlay(scoreCardList[constants.COMPUTER])
+        boardcomplete = scorecard.completedScorecards(scoreCardList)
+    scorecard.updateScorecard(scoreCardList)
+    scorecard.displayScorecards(scoreCardList)
+    if scoreCardList[constants.USER][constants.TOTAL] > scoreCardList[constants.COMPUTER][constants.TOTAL]:
+        print("User wins... Take that Skynet!!!!")
+    else:
+        print("Computer wins... The singularity is imminent")
+    
+    
+    
     """
-    create a list of lists for the scorecard
-    set userTurn to false
-    call resetScorecard
-
     while there are still empty items in either scorecard
         swap players
         call updateScorecard

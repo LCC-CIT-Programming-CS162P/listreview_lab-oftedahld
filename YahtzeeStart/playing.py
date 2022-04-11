@@ -12,6 +12,25 @@ import scoring
 
 # TODO: write userPlay.  I've written the rest for you.
 def userPlay(uScorecard):
+    keepDice = []
+    rollDice = []
+    itemIndex = -1
+    rollCount = 0
+    while rollCount < 3 and len(keepDice) < 5:
+        rollDiceNumber = 5 - len(keepDice)
+        roll(rollDiceNumber, rollDice)
+        print("The dice you rolled: ")
+        displayDice(rollDice)
+        rollCount = rollCount + 1
+        if rollCount < 3:
+            getKeeping(rollDice, keepDice)
+        else:
+            moveRollToKeep(rollDice, keepDice)
+        print("The dice you are keeping: ")
+        displayDice(keepDice)
+    itemIndex = getScorecardItem(uScorecard)
+    uScorecard[itemIndex] = scoring.score(itemIndex, keepDice)
+        
     """
         create an empty list for the dice you're keeping
         create another empty list for the dice that you're rolling

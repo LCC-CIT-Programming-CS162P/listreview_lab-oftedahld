@@ -12,6 +12,16 @@ def resetScorecard(scorecard):
     The subtotal, bonus and total should be set to 0.
     It does not return a value but the scorecard is altered by the function
     """
+    uScorecard = scorecard[constants.USER]
+    cScorecard = scorecard[constants.COMPUTER]
+    for i in range(len(uScorecard)):
+        uScorecard[i] = constants.EMPTY
+    for i in range(len(cScorecard)):
+        cScorecard[i] = constants.EMPTY
+    uScorecard[constants.SUBTOTAL] = 0
+    cScorecard[constants.SUBTOTAL] = 0
+    uScorecard[constants.TOTAL] = 0
+    cScorecard[constants.TOTAL] = 0    
 
 
 def updateScorecard(scorecard):
@@ -19,7 +29,36 @@ def updateScorecard(scorecard):
     calculates the subtotal, bonus and total for both the user and the computer.
     It does not return a value but the scorecard is altered by the function
     """
-
+    uScorecard = scorecard[constants.USER]
+    cScorecard = scorecard[constants.COMPUTER]
+    ###RESET TOTALS####
+    cScorecard[constants.SUBTOTAL] = 0
+    uScorecard[constants.SUBTOTAL] = 0
+    cScorecard[constants.TOTAL] = 0
+    uScorecard[constants.TOTAL] = 0
+    ####UPDATE SUBTOTALS####
+    for i in range(constants.ONES, constants.SIXES + 1):
+        if cScorecard[i] > 0:
+            cScorecard[constants.SUBTOTAL] = cScorecard[constants.SUBTOTAL] + cScorecard[i]
+        if uScorecard[i] > 0:
+            uScorecard[constants.SUBTOTAL] = uScorecard[constants.SUBTOTAL] + uScorecard[i]
+    ####CALCULATE BONUS####
+    if uScorecard[constants.SUBTOTAL] >= 63:
+        uScorecard[constants.BONUS] = 35
+    else:
+        uScorecard[constants.BONUS] = 0
+    if cScorecard[constants.SUBTOTAL] >= 63:
+        cScorecard[constants.BONUS] = 35
+    else:
+        cScorecard[constants.BONUS] = 0
+    ####UPDATE TOTAL####
+    cScorecard[constants.TOTAL] = 0
+    uScorecard[constants.TOTAL] = 0
+    for i in range(constants.THREE_OF_A_KIND, constants.BONUS + 1):
+        if cScorecard[i] > 0:
+            cScorecard[constants.TOTAL] = cScorecard[constants.TOTAL] + cScorecard[i]
+        if uScorecard[i] > 0:
+            uScorecard[constants.TOTAL] = uScorecard[constants.TOTAL] + uScorecard[i]
 
 def formatCell(value):
     return "" if value < 0 else str(value)
@@ -57,4 +96,22 @@ def displayScorecards(scorecard):
 
 
 
-
+def completedScorecards(scorecard):
+    uScorecard = scorecard[constants.USER]
+    cScorecard = scorecard[constants.COMPUTER]
+    for i in range(len(uScorecard)):
+        if uScorecard[i] < 0:
+            uScorecardComplete = False
+            break
+        else:
+            uScorecardComplete = True
+    for i in range(len(cScorecard)):
+        if cScorecard[i] < 0:
+            cScorecardComplete = False
+            break
+        else:
+            cScorecardComplete = True
+    if uScorecardComplete == False or cScorecardComplete == False:
+        return False
+    else:
+        return True
